@@ -1,3 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- Name fot the application -->
 	<string name = "app_name">Pets</string>
+	
+	<!-- Label for overflow menu option that inserts fake pet data into the app -->
+	<string name = "action_insert_dummy_data">Insert Dummy Data</string>
+	
+	<!-- Label for overflow menu option that deletes all pet data in the app -->
+	<string name = "action_delete_all_entries">Delete All Pets</string>
+	
+	<!-- Title for the activity to add a new pet -->
+	<string name = "editor_activity_title_new_pet">Add a Pet</string>
+	
+	<!-- Label for editor menu option to save pet and leave editor -->
+	<string name = "action_save">Save</string>
+	
+	<!-- Label for editor overflow menu option that deletes the current pet -->
+	<string name = "action_delete">Delete</string>
+	
+	<!-- Label for overview category of attributes in the editor -->
+	<string name = "category_overview">Overview</string>
+	
+	<!-- Label for gender information in the editor -->
+	<string name = "category_gender">Gender</string>
+	
+	<!-- Label for measurment information in the editor -->
+	<string name = "category_measurement">Measurement</string>
+	
+	<!-- Text hint for name field in the editor -->
+	<string name = "hint_pet_name">Name</string>
+	
+	<!-- Text hint for breed field in the editor -->
+	<string name = "hint_pet_breed">Breed</string>
+	
+	<!-- Text hint for weight field in the editor -->
+	<string name = "hint_pet_weight">Weight</string>
+	
+	<!-- Units for weight of the pet (kilograms) -->
+	<string name = "unit_pet_weight">kg</string>
+	
+	<!-- Label for dropdown menu option if the pet's gender is unknown -->
+	<string name = "gender_unknown">Unknown</string>
+	
+	<!-- Label for dropdown menu option if the pet's gender is male -->
+	<string name = "gender_male">Male</string>
+	
+	<!-- Label for dropdown menu option if the pet's gender is femal -->
+	<string name = "gender_female">Female</string>
 </resources>
