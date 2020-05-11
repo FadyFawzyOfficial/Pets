@@ -49,7 +49,12 @@ public class CatalogActivity extends AppCompatActivity
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
         mDbHelper = new PetDbHelper( this );
-        
+    }
+    
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
         displayDatabaseInfo();
     }
     
@@ -90,7 +95,7 @@ public class CatalogActivity extends AppCompatActivity
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         
         // Create a ContentValues object where column names are the keys,
-        // and Toto's pet attributes are teh values.
+        // and Toto's pet attributes are the values.
         ContentValues values = new ContentValues();
         values.put( PetEntry.COLUMN_PET_NAME, "Toto" );
         values.put( PetEntry.COLUMN_PET_BREED, "Terrier" );
