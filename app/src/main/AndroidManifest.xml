@@ -31,6 +31,11 @@
 				android:name = "android.support.PARENT_ACTIVITY"
 				android:value = ".CatalogActivity" />
 		</activity>
+		
+		<provider
+			android:name = ".data.PetProvider"
+			android:authorities = "com.engineerfadyfawzi.pets"
+			android:exported = "false" />
 	
 	</application>
 
