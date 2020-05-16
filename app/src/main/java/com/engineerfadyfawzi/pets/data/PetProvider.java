@@ -235,7 +235,7 @@ public class PetProvider extends ContentProvider
                 throw new IllegalArgumentException( "Pet requires a name" );
         }
         
-        // For update's validation method version (when isInsetrMethod == false ).
+        // For update's validation method version (when isInsertMethod == false ).
         // If the {@link PetEntry#COLUMN_PET_GENDER} key is present,
         // check that the gender value is valid.
         if ( isInsertMethod || contentValues.containsKey( PetEntry.COLUMN_PET_GENDER ) )
@@ -364,6 +364,20 @@ public class PetProvider extends ContentProvider
     @Override
     public String getType( Uri uri )
     {
-        return null;
+        // Figure out if the URI matcher can match the URI to a specific code
+        // (100 for pets table and 101 for a single pet)
+        final int match = sUriMatcher.match( uri );
+        
+        switch ( match )
+        {
+            case PETS:
+                return PetEntry.CONTENT_LIST_TYPE;
+            
+            case PET_ID:
+                return PetEntry.CONTENT_ITEM_TYPE;
+            
+            default:
+                throw new IllegalStateException( "Unknown URI " + uri + " with match " + match );
+        }
     }
 }
