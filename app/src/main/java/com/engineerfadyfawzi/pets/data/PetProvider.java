@@ -110,7 +110,6 @@ public class PetProvider extends ContentProvider
                 // For the PETS code, query the pets table directly with the given
                 // projection, selection, selection arguments, and sort order.
                 // The cursor could contain multiple rows of the pets table.
-                // COMPLETED: Perform database query on pets table
                 cursor = database.query( PetEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder );
                 break;
@@ -178,8 +177,6 @@ public class PetProvider extends ContentProvider
         if ( TextUtils.isEmpty( petName ) )
             throw new IllegalArgumentException( "Pet requires a name" );
         
-        // COMPLETED: Finish sanity checking the rest of the attributes in ContentValues
-        
         // Check that the gender is valid
         Integer petGender = contentValues.getAsInteger( PetEntry.COLUMN_PET_GENDER );
         if ( petGender == null || !PetEntry.isValidGender( petGender ) )
@@ -223,7 +220,82 @@ public class PetProvider extends ContentProvider
     @Override
     public int update( Uri uri, ContentValues contentValues, String selection, String[] selectionArgs )
     {
-        return 0;
+        int match = sUriMatcher.match( uri );
+        
+        switch ( match )
+        {
+            case PETS:
+                return updatePet( uri, contentValues, selection, selectionArgs );
+            case PET_ID:
+                // For teh PET_ID code, extract out the ID from the URI,
+                // so we know which row to update. Selection will be "_id=?" and selection
+                // arguments will be a String array containing the actual ID.
+                selection = PetEntry._ID + "=?";
+                selectionArgs = new String[]{ String.valueOf( ContentUris.parseId( uri ) ) };
+                return updatePet( uri, contentValues, selection, selectionArgs );
+            default:
+                throw new IllegalArgumentException( "Update is not supported for " + uri );
+        }
+    }
+    
+    /**
+     * Update pets in the database with the given content values. Apply the changes to the rows
+     * specified in the selection and selection arguments (which could be 0 or 1 or more pets).
+     * Return the number of row that were successfully updated.
+     *
+     * @param uri
+     * @param contentValues
+     * @param selection
+     * @param selectionArgs
+     *
+     * @return
+     */
+    private int updatePet( Uri uri, ContentValues contentValues, String selection, String[] selectionArgs )
+    {
+        // If there are no values to update, then don't try to update the database
+        if ( contentValues.size() == 0 )
+            return 0;
+        
+        // If the {@link PetEntry#COLUMN_PET_NAME} key is present,
+        // check that the name value is not null or empty.
+        if ( contentValues.containsKey( PetEntry.COLUMN_PET_NAME ) )
+        {
+            // Check that the name is not null or empty
+            String petName = contentValues.getAsString( PetEntry.COLUMN_PET_NAME );
+            if ( TextUtils.isEmpty( petName ) )
+                throw new IllegalArgumentException( "Pet requires a name" );
+        }
+        
+        // If the {@link PetEntry#COLUMN_PET_GENDER} key is present,
+        // check that the gender value is valid.
+        if ( contentValues.containsKey( PetEntry.COLUMN_PET_GENDER ) )
+        {
+            // Check that the gender is valid
+            Integer petGender = contentValues.getAsInteger( PetEntry.COLUMN_PET_GENDER );
+            if ( petGender == null || !PetEntry.isValidGender( petGender ) )
+                throw new IllegalArgumentException( "Pet requires valid gender" );
+        }
+        
+        // If the {@link PetEntry#COLUMN_PET_WEIGHT} key is present,
+        // check that the weight value is valid.
+        if ( contentValues.containsKey( PetEntry.COLUMN_PET_WEIGHT ) )
+        {
+            // If the weight is provided, check that it's greater than or equal to 0 kg
+            Integer petWeight = contentValues.getAsInteger( PetEntry.COLUMN_PET_WEIGHT );
+            if ( petWeight != null && petWeight < 0 )
+                throw new IllegalArgumentException( "Pet requires valid weight" );
+        }
+        
+        // No need to check the breed, any value is valid (including null).
+        
+        // Otherwise, get writable database to update the data
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        
+        // COMPLETED: Update teh selected pets in the pets database table with the given ContentValues
+        // COMPLETED: Return the number of rows that were affected
+        
+        // Returns the number of database rows affected by the update statement.
+        return database.update( PetEntry.TABLE_NAME, contentValues, selection, selectionArgs );
     }
     
     /**
