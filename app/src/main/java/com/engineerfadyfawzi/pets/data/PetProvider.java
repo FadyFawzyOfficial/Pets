@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.engineerfadyfawzi.pets.data.PetContract.PetEntry;
@@ -172,7 +173,25 @@ public class PetProvider extends ContentProvider
      */
     private Uri insertPet( Uri uri, ContentValues contentValues )
     {
-        // COMPLETED: Insert a new pet into the pets database table with the given contentValues
+        // Check that the name is not null or empty
+        String petName = contentValues.getAsString( PetEntry.COLUMN_PET_NAME );
+        if ( TextUtils.isEmpty( petName ) )
+            throw new IllegalArgumentException( "Pet requires a name" );
+        
+        // COMPLETED: Finish sanity checking the rest of the attributes in ContentValues
+        
+        // Check that the gender is valid
+        Integer petGender = contentValues.getAsInteger( PetEntry.COLUMN_PET_GENDER );
+        if ( petGender == null || !PetEntry.isValidGender( petGender ) )
+            throw new IllegalArgumentException( "Pet requires valid gender" );
+        
+        // If the weight is provided, check that it's greater than or equal to 0 kg
+        Integer petWeight = contentValues.getAsInteger( PetEntry.COLUMN_PET_WEIGHT );
+        if ( petWeight != null && petWeight < 0 )
+            throw new IllegalArgumentException( "Pet requires valid weight" );
+        
+        // No need to check the breed, any value is valid (including null).
+        
         // Get writable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
         
