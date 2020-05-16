@@ -172,22 +172,8 @@ public class PetProvider extends ContentProvider
      */
     private Uri insertPet( Uri uri, ContentValues contentValues )
     {
-        // Check that the name is not null or empty
-        String petName = contentValues.getAsString( PetEntry.COLUMN_PET_NAME );
-        if ( TextUtils.isEmpty( petName ) )
-            throw new IllegalArgumentException( "Pet requires a name" );
-        
-        // Check that the gender is valid
-        Integer petGender = contentValues.getAsInteger( PetEntry.COLUMN_PET_GENDER );
-        if ( petGender == null || !PetEntry.isValidGender( petGender ) )
-            throw new IllegalArgumentException( "Pet requires valid gender" );
-        
-        // If the weight is provided, check that it's greater than or equal to 0 kg
-        Integer petWeight = contentValues.getAsInteger( PetEntry.COLUMN_PET_WEIGHT );
-        if ( petWeight != null && petWeight < 0 )
-            throw new IllegalArgumentException( "Pet requires valid weight" );
-        
-        // No need to check the breed, any value is valid (including null).
+        // Validates the pet values before insert data into database.
+        validatePetContentValues( contentValues );
         
         // Get writable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -205,6 +191,73 @@ public class PetProvider extends ContentProvider
         // Once we know the ID of the new row in the table,
         // return the new URI with the ID (of the newly inserted row) appended to the end of it.
         return ContentUris.withAppendedId( uri, newRowId );
+    }
+    
+    /**
+     * This is insert's validation method.
+     *
+     * Validate the pet values before insert data into database.
+     *
+     * @param contentValues
+     */
+    private void validatePetContentValues( ContentValues contentValues )
+    {
+        // We call the update's validation method with argument isInsertMethod = true,
+        // to skip the checking of each attribute is presented or not,
+        // reverses what we do in update's validation method which check each attribute is present
+        // or not before checking if it's valid or not.
+        validatePetContentValues( contentValues, true );
+    }
+    
+    /**
+     * This is update's validation method.
+     *
+     * Validate the pet values before "insertion" (insert's validation method will call this
+     * method with isInsertMethod = false) or update (update's validation method) data in database.
+     *
+     * @param contentValues
+     * @param isInsertMethod
+     */
+    private void validatePetContentValues( ContentValues contentValues, boolean isInsertMethod )
+    {
+        // to check if each attribute is present or not before checking if it's valid or not.
+        // If the key is present, then we can proceed with extracting the value from it,
+        // and then checking if it's valid.
+        
+        // For update's validation method version (when isInsertMethod == false ).
+        // If the {@link PetEntry#COLUMN_PET_NAME} key is present,
+        // check that the name value is not null or empty.
+        if ( isInsertMethod || contentValues.containsKey( PetEntry.COLUMN_PET_NAME ) )
+        {
+            // Check that the name is not null or empty
+            String petName = contentValues.getAsString( PetEntry.COLUMN_PET_NAME );
+            if ( TextUtils.isEmpty( petName ) )
+                throw new IllegalArgumentException( "Pet requires a name" );
+        }
+        
+        // For update's validation method version (when isInsetrMethod == false ).
+        // If the {@link PetEntry#COLUMN_PET_GENDER} key is present,
+        // check that the gender value is valid.
+        if ( isInsertMethod || contentValues.containsKey( PetEntry.COLUMN_PET_GENDER ) )
+        {
+            // Check that the gender is valid
+            Integer petGender = contentValues.getAsInteger( PetEntry.COLUMN_PET_GENDER );
+            if ( petGender == null || !PetEntry.isValidGender( petGender ) )
+                throw new IllegalArgumentException( "Pet requires valid gender" );
+        }
+        
+        // For update's validation method version (when isInsetrMethod == false ).
+        // If the {@link PetEntry#COLUMN_PET_WEIGHT} key is present,
+        // check that the weight value is valid.
+        if ( contentValues.containsKey( PetEntry.COLUMN_PET_WEIGHT ) )
+        {
+            // If the weight is provided, check that it's greater than or equal to 0 kg
+            Integer petWeight = contentValues.getAsInteger( PetEntry.COLUMN_PET_WEIGHT );
+            if ( petWeight != null && petWeight < 0 )
+                throw new IllegalArgumentException( "Pet requires valid weight" );
+        }
+        
+        // No need to check the breed, any value is valid (including null).
     }
     
     /**
@@ -256,37 +309,8 @@ public class PetProvider extends ContentProvider
         if ( contentValues.size() == 0 )
             return 0;
         
-        // If the {@link PetEntry#COLUMN_PET_NAME} key is present,
-        // check that the name value is not null or empty.
-        if ( contentValues.containsKey( PetEntry.COLUMN_PET_NAME ) )
-        {
-            // Check that the name is not null or empty
-            String petName = contentValues.getAsString( PetEntry.COLUMN_PET_NAME );
-            if ( TextUtils.isEmpty( petName ) )
-                throw new IllegalArgumentException( "Pet requires a name" );
-        }
-        
-        // If the {@link PetEntry#COLUMN_PET_GENDER} key is present,
-        // check that the gender value is valid.
-        if ( contentValues.containsKey( PetEntry.COLUMN_PET_GENDER ) )
-        {
-            // Check that the gender is valid
-            Integer petGender = contentValues.getAsInteger( PetEntry.COLUMN_PET_GENDER );
-            if ( petGender == null || !PetEntry.isValidGender( petGender ) )
-                throw new IllegalArgumentException( "Pet requires valid gender" );
-        }
-        
-        // If the {@link PetEntry#COLUMN_PET_WEIGHT} key is present,
-        // check that the weight value is valid.
-        if ( contentValues.containsKey( PetEntry.COLUMN_PET_WEIGHT ) )
-        {
-            // If the weight is provided, check that it's greater than or equal to 0 kg
-            Integer petWeight = contentValues.getAsInteger( PetEntry.COLUMN_PET_WEIGHT );
-            if ( petWeight != null && petWeight < 0 )
-                throw new IllegalArgumentException( "Pet requires valid weight" );
-        }
-        
-        // No need to check the breed, any value is valid (including null).
+        // Validates the pet values before update data in database.
+        validatePetContentValues( contentValues, false );
         
         // Otherwise, get writable database to update the data
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
