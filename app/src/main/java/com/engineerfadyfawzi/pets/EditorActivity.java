@@ -118,7 +118,18 @@ public class EditorActivity extends AppCompatActivity
         String petName = mNameEditText.getText().toString().trim();
         String petBreed = mBreedEditText.getText().toString();
         int petGender = mGender;
-        int petWeight = Integer.parseInt( mWeightEditText.getText().toString().trim() );
+        int petWeight;
+        
+        try
+        {
+            // If the user doesn't enter a weight the text field will be empty string "" (No user input).
+            // This throws NumberFormatException because we are trying to convert an empty string to an integer
+            petWeight = Integer.parseInt( mWeightEditText.getText().toString().trim() );
+        }
+        catch ( NumberFormatException numberFormatException )
+        {
+            petWeight = 0; // I set the weight to 0 because this is the default value in the database so..
+        }
         
         // Create a ContentValues object where column names are the keys,
         // and a new pet attributes are the values.
