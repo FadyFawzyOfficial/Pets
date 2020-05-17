@@ -8,11 +8,10 @@
 	android:layout_height = "match_parent"
 	tools:context = ".CatalogActivity">
 	
-	<TextView
-		android:id = "@+id/text_view_pet"
+	<ListView
+		android:id = "@+id/list_view"
 		android:layout_width = "match_parent"
-		android:layout_height = "match_parent"
-		android:padding = "@dimen/activity_margin" />
+		android:layout_height = "match_parent" />
 	
 	<com.google.android.material.floatingactionbutton.FloatingActionButton
 		android:id = "@+id/fab"
