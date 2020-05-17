@@ -9,6 +9,12 @@
 	<!-- Label for overflow menu option that deletes all pet data in the app -->
 	<string name = "action_delete_all_entries">Delete All Pets</string>
 	
+	<!-- Title text for the empty view, which describes teh empty dog house image -->
+	<string name = "empty_view_title_text">It\'s a bit lonely here...</string>
+	
+	<!-- Subtitle text for the empty view that prompts the user to add a pet -->
+	<string name = "empty_view_subtitle_text">Get started by adding a pet</string>
+	
 	<!-- Title for the activity to add a new pet -->
 	<string name = "editor_activity_title_new_pet">Add a Pet</string>
 	

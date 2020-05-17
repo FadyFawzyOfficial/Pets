@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.engineerfadyfawzi.pets.data.PetContract.PetEntry;
 
@@ -38,6 +39,13 @@ public class CatalogActivity extends AppCompatActivity
                 startActivity( intent );
             }
         } );
+        
+        // Find the ListView which will be populated with the pet data.
+        ListView petListView = findViewById( R.id.list_view );
+        
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        View emptyView = findViewById( R.id.empty_view );
+        petListView.setEmptyView( emptyView );
     }
     
     @Override
