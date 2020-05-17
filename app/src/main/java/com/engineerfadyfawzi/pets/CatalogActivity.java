@@ -5,6 +5,7 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.engineerfadyfawzi.pets.data.PetContract.PetEntry;
@@ -47,8 +49,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onClick( View view )
             {
-                Intent intent = new Intent( CatalogActivity.this, EditorActivity.class );
-                startActivity( intent );
+                Intent addPetIntent = new Intent( CatalogActivity.this, EditorActivity.class );
+                startActivity( addPetIntent );
             }
         } );
         
@@ -64,6 +66,30 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         mPetCursorAdapter = new PetCursorAdapter( this, null );
         // Attach cursor adapter to the ListView.
         petListView.setAdapter( mPetCursorAdapter );
+        
+        // Setup item click listener
+        petListView.setOnItemClickListener( new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick( AdapterView< ? > adapterView, View view, int position, long id )
+            {
+                // Create new Intent to go to {@link EditorActivity}.
+                Intent editPetIntent = new Intent( CatalogActivity.this, EditorActivity.class );
+                
+                // From the content URI that represents the specific pet that was clicked on,
+                // by appending the "id" (passed as input to this method) onto the
+                // {@link PetEntry#CONTENT_URI}.
+                // For example, the URI would be "content://com.engineerfadyfawzi.pets/pets/3"
+                // if the pet with ID 3 was clicked on.
+                Uri editPetUri = ContentUris.withAppendedId( PetEntry.CONTENT_URI, id );
+                
+                // Set the URI on the data field of the intent
+                editPetIntent.setData( editPetUri );
+                
+                // Launch the {@link EditorActivity} to display the data for the current pet.
+                startActivity( editPetIntent );
+            }
+        } );
         
         // Initializes the CursorLoader. The PET_LOADER value is eventually passed to onCreateLoader().
         // Kick off the loader

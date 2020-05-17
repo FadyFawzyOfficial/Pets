@@ -18,6 +18,9 @@
 	<!-- Title for the activity to add a new pet -->
 	<string name = "editor_activity_title_new_pet">Add a Pet</string>
 	
+	<!-- Title for the activity to edit an existing pet -->
+	<string name = "editor_activity_title_edit_pet">Edit Pet</string>
+	
 	<!-- Label for editor menu option to save pet and leave editor -->
 	<string name = "action_save">Save</string>
 	

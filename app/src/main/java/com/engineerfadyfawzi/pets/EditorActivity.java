@@ -56,7 +56,25 @@ public class EditorActivity extends AppCompatActivity
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_editor );
         
-        // Find all relevant views that we will need to read user input from
+        // Examine the intent that was used to launch this activity,
+        // in order to figure out if we're creating a new pet or editing an existing one.
+        // Use getIntent() and getData() to get the associated URI.
+        Uri editPetUri = getIntent().getData();
+        
+        // Set title of EditorActivity on which situation we have.
+        // If the EditorActivity was opened using the ListView item,
+        // then we will have uri of pet so change app bar to say "Edit Pet"
+        // Otherwise if this is a new pet, uri is null so change app bar to say "Add a pet"
+        
+        // If the intent DOES NOT contain a pet content UrI, then we know that we are creating a new pet.
+        if ( editPetUri == null )
+            // This is a new pet, so change the app bar to say "Add a Pet"
+            setTitle( R.string.editor_activity_title_new_pet );
+        else
+            // Otherwise this is an existing pet, so change app bar to say "Edit Pet"
+            setTitle( getString( R.string.editor_activity_title_edit_pet ) );
+        
+        // Find all relevant views that we will need to read user input from.
         mNameEditText = findViewById( R.id.edit_pet_name );
         mBreedEditText = findViewById( R.id.edit_pet_breed );
         mWeightEditText = findViewById( R.id.edit_pet_weight );
@@ -148,7 +166,7 @@ public class EditorActivity extends AppCompatActivity
             Toast.makeText( this, getString( R.string.editor_insert_pet_successful ),
                     Toast.LENGTH_SHORT ).show();
         else
-            // Otherwise, the content URI is null, then there was an erro with insertion.
+            // Otherwise, the content URI is null, then there was an error with insertion.
             Toast.makeText( this, getString( R.string.editor_insert_pet_failed ),
                     Toast.LENGTH_SHORT ).show();
     }
