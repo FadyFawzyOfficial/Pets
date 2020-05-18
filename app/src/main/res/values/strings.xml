@@ -40,7 +40,16 @@
 	<string name = "editor_update_pet_failed">Error with updating pet</string>
 	
 	<!-- Toast message in editor when insert or update a pet with empty field name (wasn't modified) -->
-	<string name = "editor_not_saved_name_required">The pet name is required</string>
+	<string name = "editor_unsaved_name_required">The pet name is required</string>
+	
+	<!-- Dialog message when user is leaving editor but hasn't saved changes -->
+	<string name = "unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+	
+	<!-- Dialog button text for the option to discard a user's changes -->
+	<string name = "discard">Discard</string>
+	
+	<!-- Dialog button text for the option to keep editing the current pet -->
+	<string name = "keep_editing">Keep Editing</string>
 	
 	<!-- Label for overview category of attributes in the editor -->
 	<string name = "category_overview">Overview</string>
