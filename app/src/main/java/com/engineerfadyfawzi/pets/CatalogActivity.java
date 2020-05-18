@@ -1,5 +1,6 @@
 package com.engineerfadyfawzi.pets;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -7,6 +8,7 @@ import androidx.loader.content.Loader;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -151,7 +153,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
-                deleteAllPets();
+                showDeleteAllConfirmationDialog();
                 return true;
         }
         
@@ -203,5 +205,44 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // Clears out the adapter's reference to the Cursor.
         // This prevents memory leaks.
         mPetCursorAdapter.swapCursor( null );
+    }
+    
+    /**
+     * Prompt the user to confirm that they want to delete all these pets.
+     */
+    private void showDeleteAllConfirmationDialog()
+    {
+        // Create an AlertDialog.Builder and set message, and click listeners for
+        // the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder( this );
+        builder.setMessage( R.string.delete_all_dialog_msg );
+        
+        // set click listener for the positive button
+        builder.setPositiveButton( R.string.yes, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick( DialogInterface dialogInterface, int id )
+            {
+                // User click the "Yes" button, so delete all the pets.
+                deleteAllPets();
+            }
+        } );
+        
+        // set click listener for the negative button
+        builder.setNegativeButton( R.string.no, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick( DialogInterface dialogInterface, int id )
+            {
+                // User clicked the "No" button, so dismiss the dialog
+                // and continue on the CatalogActivity
+                if ( dialogInterface != null )
+                    dialogInterface.dismiss();
+            }
+        } );
+        
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

@@ -9,6 +9,21 @@
 	<!-- Label for overflow menu option that deletes all pet data in the app -->
 	<string name = "action_delete_all_entries">Delete All Pets</string>
 	
+	<!-- Toast message in catalog activity when the all pets were successfully deleted -->
+	<string name = "catalog_delete_pets_successful">All pets deleted</string>
+	
+	<!-- Toast message in catalog activity when the pets have failed to be deleted -->
+	<string name = "catalog_delete_pets_failed">Error with deleting pets</string>
+	
+	<!-- Dialog message to ask the user to confirm deleting the all pets -->
+	<string name = "delete_all_dialog_msg">Are you sure you want to DELETE ALL the pets?</string>
+	
+	<!-- Dialog button text for the option to confirm (say "Yes") deletion of the all pets -->
+	<string name = "yes">Yes</string>
+	
+	<!-- Dialog button text for the option to cancel (say "No") deletion of the all pets -->
+	<string name = "no">No</string>
+	
 	<!-- Title text for the empty view, which describes teh empty dog house image -->
 	<string name = "empty_view_title_text">It\'s a bit lonely here...</string>
 	
