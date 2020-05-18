@@ -157,7 +157,24 @@ public class EditorActivity extends AppCompatActivity
         String petName = mNameEditText.getText().toString().trim();
         String petBreed = mBreedEditText.getText().toString();
         int petGender = mGender;
-        int petWeight;
+        int petWeight = 0;
+        
+        // Check if this is supposed to be a new pet,
+        // and check if all the fields in the editor are blank.
+        if ( TextUtils.isEmpty( petName ) )
+        {
+            // Since no name for a pet was modified, we can return early without creating a new pet.
+            // No need to create ContentValues and no need to do any ContentProvider operations,
+            // when the pet name must be NOT NULL.
+            Toast.makeText( this, getString( R.string.editor_not_saved_name_required ),
+                    Toast.LENGTH_LONG ).show();
+            return;
+            
+            // If a name wasn't input that would be the only scenario that would give error.
+            // No need to worry about Breed it's allow to be null or even empty,
+            // No need to worry about Gender, as it will say Unknown by default,
+            // No need to worry about Weight it will set to a default value = 0 if it wasn't modified.
+        }
         
         try
         {
@@ -180,19 +197,15 @@ public class EditorActivity extends AppCompatActivity
         
         // Determine if this is a new or existing pet by checking if mEditPetUri is null or not
         if ( mEditPetUri == null )
-        {
             // This is a NEW pet, so insert a new pet into the provider,
             //  returning the content URI for the new pet.
             insertPet( values );
-        }
         else
-        {
             // Otherwise this is an Existing pet, so update the pet with content URI: mEditPetUri
             // and pass in the new ContentValues. Pass in null for the selection and selection args,
             // because mEditPetUri will already identify the correct row in the database that
             // we want to modify.
             updatePet( values );
-        }
     }
     
     /**

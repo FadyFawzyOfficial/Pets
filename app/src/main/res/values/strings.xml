@@ -39,6 +39,9 @@
 	<!-- Toast message in editor when current pet has failed to be updated -->
 	<string name = "editor_update_pet_failed">Error with updating pet</string>
 	
+	<!-- Toast message in editor when insert or update a pet with empty field name (wasn't modified) -->
+	<string name = "editor_not_saved_name_required">The pet name is required</string>
+	
 	<!-- Label for overview category of attributes in the editor -->
 	<string name = "category_overview">Overview</string>
 	
