@@ -110,4 +110,7 @@
 	
 	<!-- Label for dropdown menu option if the pet's gender is femal -->
 	<string name = "gender_female">Female</string>
+	
+	<!-- Label for the pet's breed if the breed is unknown -->
+	<string name = "unknown_breed">Unknown breed</string>
 </resources>
