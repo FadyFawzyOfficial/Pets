@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -119,6 +120,15 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // Log.v( "CatalogActivity", "New row ID " + newRowId );
     }
     
+    /**
+     * Helper method to delete all pets in the database.
+     */
+    private void deleteAllPets()
+    {
+        int rowsDeleted = getContentResolver().delete( PetEntry.CONTENT_URI, null, null );
+        Log.v( "CatalogActivity", rowsDeleted + " rows deleted from pet database" );
+    }
+    
     @Override
     public boolean onCreateOptionsMenu( Menu menu )
     {
@@ -141,7 +151,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
-                // Do noting for now
+                deleteAllPets();
                 return true;
         }
         
