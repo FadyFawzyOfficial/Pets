@@ -108,8 +108,14 @@ public class EditorActivity extends AppCompatActivity
         
         // If the intent DOES NOT contain a pet content UrI, then we know that we are creating a new pet.
         if ( mEditPetUri == null )
+        {
             // This is a new pet, so change the app bar to say "Add a Pet"
             setTitle( R.string.editor_activity_title_new_pet );
+            
+            // Invalidate teh options menu, so the "Delete" menu option can be hidden.
+            // (It doesn't make sense to delete a pet that hasn't been created yet.)
+            invalidateOptionsMenu();
+        }
         else
         {
             // Otherwise this is an existing pet, so change app bar to say "Edit Pet"
@@ -290,6 +296,29 @@ public class EditorActivity extends AppCompatActivity
         // Inflate the menu options from the res/menu/menu_editor.xml file.
         // This adds menu items to the app bar.
         getMenuInflater().inflate( R.menu.menu_editor, menu );
+        return true;
+    }
+    
+    /**
+     * This method is called after invalidateOptionMenu(), so that the menu can be updated.
+     * (some menu items can be hidden or made visible).
+     *
+     * @param menu
+     *
+     * @return
+     */
+    @Override
+    public boolean onPrepareOptionsMenu( Menu menu )
+    {
+        super.onPrepareOptionsMenu( menu );
+        
+        // If this is a new pet, hide the "Delete" menu item.
+        if ( mEditPetUri == null )
+        {
+            MenuItem menuItem = menu.findItem( R.id.action_delete );
+            menuItem.setVisible( false );
+        }
+        
         return true;
     }
     
