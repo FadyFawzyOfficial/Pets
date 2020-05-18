@@ -93,6 +93,9 @@ public class EditorActivity extends AppCompatActivity
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_editor );
         
+        if ( savedInstanceState != null )
+            mPetHasChanged = savedInstanceState.getBoolean( "mPetHasChanged" );
+        
         // Examine the intent that was used to launch this activity,
         // in order to figure out if we're creating a new pet or editing an existing one.
         // Use getIntent() and getData() to get the associated URI.
@@ -373,6 +376,13 @@ public class EditorActivity extends AppCompatActivity
     }
     
     @Override
+    protected void onSaveInstanceState( Bundle outState )
+    {
+        super.onSaveInstanceState( outState );
+        outState.putBoolean( "mPetHasChanged", mPetHasChanged );
+    }
+    
+    @Override
     public Loader< Cursor > onCreateLoader( int id, Bundle args )
     {
         // Since the editor shows all pet attributes, define a projection that contains
@@ -478,6 +488,10 @@ public class EditorActivity extends AppCompatActivity
             {
                 // User clicked the "Keep editing" button, so dismiss the dialog
                 // and continue editing the pet.
+                // Reason of this if statement: Sometimes unexpected things could be happen like
+                // alert popup, user click outside the modal (prematurely closing it), api error, etc.
+                // It's a good measure to check just to be sure that there is something to close
+                // before you actually close it.
                 if ( dialogInterface != null )
                     dialogInterface.dismiss();
             }
