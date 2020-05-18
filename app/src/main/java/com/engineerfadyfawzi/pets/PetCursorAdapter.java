@@ -79,7 +79,8 @@ public class PetCursorAdapter extends CursorAdapter
         
         // If the pet breed is empty string or null, then use some default text
         // that says "Unknown breed", so the TextView isn't blank.
-        if ( TextUtils.isEmpty( petBreed ) )
+        // I add String.trim() method to delete any white space avoiding empty white space breed
+        if ( TextUtils.isEmpty( petBreed.trim() ) )
             petBreed = context.getString( R.string.unknown_breed );
         
         // Update the TextViews with the attributes for the current pet.
