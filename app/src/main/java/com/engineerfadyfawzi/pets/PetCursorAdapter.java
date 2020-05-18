@@ -44,8 +44,6 @@ public class PetCursorAdapter extends CursorAdapter
     @Override
     public View newView( Context context, Cursor cursor, ViewGroup parent )
     {
-        // COMPLETED: Fill out this method and return the list item view (instead of null)
-        
         // Inflate a list item view using the layout specified in the list_item.xml
         return LayoutInflater.from( context ).inflate( R.layout.list_item, parent, false );
     }
@@ -66,8 +64,6 @@ public class PetCursorAdapter extends CursorAdapter
     @Override
     public void bindView( View view, Context context, Cursor cursor )
     {
-        // COMPLETED: Fill out this method
-        
         // Find individual views that we want to modify in the list item layout.
         TextView petNameTextView = view.findViewById( R.id.pet_name_text_view );
         TextView petBreedTextView = view.findViewById( R.id.pet_breed_text_view );
@@ -77,7 +73,7 @@ public class PetCursorAdapter extends CursorAdapter
         int petBreedColumnIndex = cursor.getColumnIndex( PetEntry.COLUMN_PET_BREED );
         
         // Read the pet attributes from the Cursor for the current pet.
-        String petName = cursor.getString( petBreedColumnIndex );
+        String petName = cursor.getString( petNameColumnIndex );
         String petBreed = cursor.getString( petBreedColumnIndex );
         
         // Update the TextViews with the attributes for the current pet.
