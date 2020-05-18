@@ -290,6 +290,41 @@ public class EditorActivity extends AppCompatActivity
                     Toast.LENGTH_SHORT ).show();
     }
     
+    /**
+     * Helper method to preform the deletion of the pet in the database
+     */
+    private void deletePet()
+    {
+        // COMPLETED: Implement this method
+        
+        // Only perform the delete if this is an existing pet.
+        if ( mEditPetUri != null )
+        {
+            // Call the ContentResolver to delete the pet at the given content URI.
+            // Pass in null for the selection and selection args because the mEditPetUri
+            // content URI already identifies the pet that we want (to delete).
+            // Delete an existing pet into the provider, retuning the integer represents rows deleted
+            int rowsDeleted = getContentResolver().delete( mEditPetUri, null, null );
+            
+            // Show a toast message depending on whether or not the delete was successful.
+            if ( rowsDeleted == 0 )
+                // If no rows were affected, then there was an error with the delete.
+                Toast.makeText( this, getString( R.string.editor_delete_pet_failed ),
+                        Toast.LENGTH_SHORT ).show();
+            else
+                // Otherwise, the delete was successful and we can display a toast.
+                Toast.makeText( this, getString( R.string.editor_delete_pet_successful ),
+                        Toast.LENGTH_SHORT ).show();
+            
+            // Optionally you could add it after the successful delete toast, would make more sense,
+            // because if the pet couldn't have been deleted, you would still be in the EditorActivity,
+            // but that depends on your preference.
+            
+            // Close the activity
+            finish();
+        }
+    }
+    
     @Override
     public boolean onCreateOptionsMenu( Menu menu )
     {
@@ -338,7 +373,8 @@ public class EditorActivity extends AppCompatActivity
             
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
-                // Do nothing for now
+                // Pop up confirmation dialog for deletion
+                showDeleteConfirmationDialog();
                 return true;
             
             // Respond to a click on the "Up" arrow button in the app bar
@@ -521,6 +557,43 @@ public class EditorActivity extends AppCompatActivity
                 // alert popup, user click outside the modal (prematurely closing it), api error, etc.
                 // It's a good measure to check just to be sure that there is something to close
                 // before you actually close it.
+                if ( dialogInterface != null )
+                    dialogInterface.dismiss();
+            }
+        } );
+        
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    
+    /**
+     * Prompt the user to confirm that they want to delete this pet.
+     */
+    private void showDeleteConfirmationDialog()
+    {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        AlertDialog.Builder builder = new AlertDialog.Builder( this );
+        builder.setMessage( R.string.delete_dialog_msg );
+        
+        // For the positive and negative buttons on the dialog.
+        builder.setPositiveButton( R.string.delete, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick( DialogInterface dialogInterface, int id )
+            {
+                // User clicked the "Delete" button, so delete the pet.
+                deletePet();
+            }
+        } );
+        
+        builder.setNegativeButton( R.string.cancel, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick( DialogInterface dialogInterface, int id )
+            {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the pet.
                 if ( dialogInterface != null )
                     dialogInterface.dismiss();
             }

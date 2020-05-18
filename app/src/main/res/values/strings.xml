@@ -51,13 +51,28 @@
 	<!-- Dialog button text for the option to keep editing the current pet -->
 	<string name = "keep_editing">Keep Editing</string>
 	
+	<!-- Toast message in editor when current pet was successfully deleted -->
+	<string name = "editor_delete_pet_successful">Pet deleted</string>
+	
+	<!-- Toast message in editor when current pet has failed to be deleted -->
+	<string name = "editor_delete_pet_failed">Error with deleting pet</string>
+	
+	<!-- Dialog message to ask the user to confirm deleting the current pet -->
+	<string name = "delete_dialog_msg">Delete this pet?</string>
+	
+	<!-- Dialog button text for the option to confirm deleting the current pet -->
+	<string name = "delete">Delete</string>
+	
+	<!-- Dialog button text for the option to cancel deletion of the current pet -->
+	<string name = "cancel">Cancel</string>
+	
 	<!-- Label for overview category of attributes in the editor -->
 	<string name = "category_overview">Overview</string>
 	
 	<!-- Label for gender information in the editor -->
 	<string name = "category_gender">Gender</string>
 	
-	<!-- Label for measurment information in the editor -->
+	<!-- Label for measurement information in the editor -->
 	<string name = "category_measurement">Measurement</string>
 	
 	<!-- Text hint for name field in the editor -->
